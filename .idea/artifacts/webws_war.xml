@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="webws:war">
+    <output-path>$PROJECT_DIR$/webws/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>webws</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="webws.war">
+      <element id="artifact" artifact-name="webws:war exploded" />
+    </root>
+  </artifact>
+</component>

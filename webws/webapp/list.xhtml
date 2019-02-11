@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsf/core">
+
+<h:head>
+    <h:outputStylesheet library="css" name="style.css"/>
+</h:head>
+
+<h:body>
+<h:dataTable value="#{listbean.posList}" var="t"
+    styleClass="common-table"
+    headerClass="common-table-head"
+    rowClasses="common-table-odd,common-table-even">
+    <h:column>
+        <c:facet name="header">
+            <h:outputText value="Arcticul No" />
+        </c:facet>
+        <h:outputText value="#{t.articul}"/>
+    </h:column>
+    <h:column>
+        <c:facet name="header">
+            <h:outputText value="Name" />
+        </c:facet>
+        <h:outputText value="#{t.name}"/>
+    </h:column>
+    <h:column>
+        <c:facet name="header">
+            <h:outputText value="Quantity" />
+        </c:facet>
+        <h:outputText value="#{t.qnty}"/>
+    </h:column>
+</h:dataTable>
+    <h:form>
+<h:commandLink action="main" value="Back"/>
+    </h:form>
+</h:body>
+</html>

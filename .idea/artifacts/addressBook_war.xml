@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="addressBook:war">
+    <output-path>$PROJECT_DIR$/addressBook/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>addressBook</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="addressBook.war">
+      <element id="artifact" artifact-name="addressBook:war exploded" />
+    </root>
+  </artifact>
+</component>

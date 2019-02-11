@@ -1,0 +1,16 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsf/core">
+
+<h:form>
+    Serian No:  <h:inputText id="ser" value="#{mybean.serialNo}" />
+<br/>
+    Name:  <h:inputText id="name" value="#{mybean.name}" />
+<br/>
+    Qty:  <h:inputText id="qty" value="#{mybean.quantity}" />
+
+    <h:commandButton action="#{mybean.doAdd()}" value="Add" />
+
+</h:form>
+
+</html>

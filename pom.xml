@@ -8,7 +8,7 @@
     <artifactId>aBook</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
-    
+
     <modules>
         <module>webws</module>
         <module>addressBook</module>
