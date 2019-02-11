@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div id="bookList" class="container-fluid">
+    <h1>Телефонный справочник</h1>
+    <div class="text-right" id="authInfo"><h4></h4></div>
+    <div class="alert alert-danger hidden" id="load-error"></div>
+    <div class="row">
+        <div class="col-sm-1">
+            <button class="btn btn-success btn-block action" data-action="add">Добавить</button>
+        </div>
+        <div class="col-sm-7">
+            <input type="text" class="form-control" id="find" />
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-success btn-block action" data-action="loadData">Искать</button>
+        </div>
+        <div class="col-sm-2">
+            <button class="btn btn-danger btn-block action" data-action="clearData">Очистить</button>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+            <th>Дата рождения</th>
+            <th>e-mail</th>
+            <th>Телефон</th>
+        </tr>
+        </thead>
+        <tbody id="bookListTable"></tbody>
+    </table>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="auth">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Авторизация</h4>
+            </div>
+            <form class="form-horizontal">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="auth-login" class="col-sm-2 control-label">Логин</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="auth-login" placeholder="Логин">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="auth-pass" class="col-sm-2 control-label">Пароль</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="auth-pass" placeholder="Пароль">
+                    </div>
+                </div>
+                <div class="alert alert-danger hidden" id="auth-error"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary action" data-action="login">Войти</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="edit">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <form class="form-horizontal">
+                <div class="modal-body">
+                    <div class="form-group" id="show-login">
+                        <label for="login" class="col-sm-3 control-label">Логин</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="login" placeholder="Логин">
+                        </div>
+                    </div>
+                    <div class="form-group" id="show-password">
+                        <label for="password" class="col-sm-3 control-label">Пароль</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" id="password" placeholder="Пароль">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="surname" class="col-sm-3 control-label">Фамилия</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="surname" placeholder="Фамилия">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstname" class="col-sm-3 control-label">Имя</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="firstname" placeholder="Имя">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="middlename" class="col-sm-3 control-label">Отчество</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="middlename" placeholder="Отчество">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthday" class="col-sm-3 control-label">Дата рождения</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="birthday" placeholder="Дата рождения">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-sm-3 control-label">e-mail</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="email" placeholder="e-mail">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="col-sm-3 control-label">Телефон</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="phone" placeholder="Телефон">
+                        </div>
+                    </div>
+                    <div class="alert alert-danger hidden" id="edit-error"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-primary action" data-action="login">Войти</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<script type="application/x-javascript">
+    $(function(){
+        form.init();
+    });
+    var form = (function(){
+        var self = this;
+        self.domain = document.location.href;
+        if(self.domain.substr(self.domain.length - 1)=='/')
+            self.domain = self.domain.substr(0,self.domain.length - 1);
+        self.client;
+        self.list = [];
+        self.tpl = '<tr><td>#Surname#</td>' +
+            '<td>#Firtsname#</td>' +
+            '<td>#Middlename#</td>' +
+            '<td>#Birthday#</td>' +
+            '<td>#Email#</td>' +
+            '<td>#Phone#</td>' +
+            '<td><button class="btn btn-info action" data-action="edit" data-attr="#Id#">изменить</button></td>' +
+            '<td><button class="btn btn-warning action" data-action="rm" data-attr="#Id#">удалить</button></td>' +
+            '</tr>';
+        self.init = function(){
+            $('#auth').on('hidden.bs.modal', function (e) {
+                if(self.client == undefined || self.client == null){
+                    setTimeout(function(){
+                        self.exit();
+                    },500);
+                }
+            });
+            $('#bookList').hide();
+            $('#auth').modal('show');
+            $('#auth-login').val('');
+            $('#auth-pass').val('');
+            $('.action').on('click',function(){
+                var el = $(this).data('action');
+                var attr = $(this).data('attr');
+                if( typeof form[el]=='function'){
+                    form[el](attr);
+                }
+            });
+        };
+        self.add = function(){
+            self.id = null;
+            $('#edit form').clear();
+            $('#edit h4').text('Новая запись');
+            $('#login').enable();
+            $('#show-password').show();
+            $('#edit').modal('show');
+        };
+        self.edit = function(id){
+            self.id = null;
+            $('#edit form').clear();
+            var map = null;
+            for(var el in self.list){
+                if(self.list[el].id==id){
+                    map = self.list[el];
+                    break;
+                }
+            }
+            if(map!=null){
+                $('#login').disable();
+                $('#show-password').hide();
+                var name = map.surname+" "+map.firstname+" "+map.middlename;
+                $('#edit h4').text(name);
+                for(var el in map){
+                    var _this = $('#'+el);
+                    if(_this!=null && typeof _this.val == 'function'){
+                        _this.val(map[el]);
+                    }
+                }
+                self.id = id;
+                $('#edit').modal('show');
+            }
+        };
+        self.rm = function(){
+            if(confirm("Вы уверены?")){
+                self.get(self.domain+'/rm/'+id,'',function(){
+                    self.loadData();
+                });
+            };
+        };
+        self.login = function(){
+            var auth = {
+                login: $('#auth-login').val(),
+                password: $('#auth-pass').val()
+            }
+            self.post(self.domain+'/auth',auth,function(resp){
+                if(resp.error != undefined) {
+                    $('#auth-error').show().text(resp.data);
+                    return;
+                }
+                self.client = resp.data;
+                $('#authInfo h4').html(self.client.Surname+" "+self.client.Firtsname+" "+self.client.Middlename+" <strong class='action' data-action='exit'>Выход</strong>")
+                $('#auth').modal('hide');
+                $('#bookList').show();
+                self.loadData();
+            });
+        };
+        self.clearData = function(){
+            $('#find').val('');
+            self.loadData();
+        };
+        self.loadData = function(){
+            self.get(self.domain+'/book',{find: $('#find').val()},function(resp){
+                $('#bookListTable').text('');
+                if(resp.error != undefined){
+                    if(resp.data = "auth"){
+                        self.exit();
+                    } else {
+                        $('#load-error').show().text(resp.data);
+                    }
+                    return;
+                }
+                var list = [];
+                self.list = resp.data;
+                for(var el in self.list){
+                    var elContent = self.tpl;
+                    for(var sub in self.list[el]){
+                        elContent = elContent.split("#"+sub+"#").join(self.list[el][sub]);
+                    }
+                    list.push(elContent);
+                }
+                $('#bookListTable').html(list.join(''));
+
+            });
+        };
+        self.ajax = function(url,type,data,callback){
+            var headers = {};
+            if(self.client != null && self.client.token!=undefined)
+                headers.Authorization = self.client.token;
+            $.ajax({
+                headers: headers,
+                url: url,
+                type: type,
+                data: data,
+                success: function (result) {
+                    callback({success: true, data: result});
+                },
+                error: function (result) {
+                    callback({error: true, data: result});
+                }
+            });
+        }
+        self.get = function(url,data,callback){
+            self.ajax(url,'GET',data,callback);
+        };
+        self.post = function(url,data,callback){
+            self.ajax(url,'POST',data,callback);
+        };
+        self.exit = function(){
+            self.client = null;
+            $('#bookList').hide();
+            $('#auth').modal('show');
+            $('#auth-login').val('');
+            $('#auth-pass').val('');
+        };
+        return self;
+    })();
+</script>
+</body>
+</html>
