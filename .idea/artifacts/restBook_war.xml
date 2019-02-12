@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="restBook:war">
+    <output-path>$PROJECT_DIR$/restBook/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>restBook</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="restBook.war">
+      <element id="artifact" artifact-name="restBook:war exploded" />
+    </root>
+  </artifact>
+</component>

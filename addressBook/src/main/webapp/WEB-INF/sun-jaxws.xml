@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<endpoints xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime" version="2.0">
-    <endpoint name="auth" implementation="ru.nixson.Front" url-pattern="/auth" />
-    <endpoint name="rm" implementation="ru.nixson.Front" url-pattern="/rm" />
-    <endpoint name="book" implementation="ru.nixson.Front" url-pattern="/book" />
-    <endpoint name="save" implementation="ru.nixson.Front" url-pattern="/save" />
-</endpoints>

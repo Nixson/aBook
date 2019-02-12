@@ -11,7 +11,7 @@
 
     <modules>
         <module>webws</module>
-        <module>addressBook</module>
+        <module>restBook</module>
     </modules>
 
     <dependencies>

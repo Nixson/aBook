@@ -1,17 +1,21 @@
 package ru.nixson;
 
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "DEPARTMENT")
+@Table(name = "book")
 public class Book {
 
+    @Generated(value = GenerationTime.INSERT)
     @Id
     @Column(name = "id")
-    private String identifier;
+    private int identifier;
 
     @Column(name = "login")
     private String login;
@@ -37,11 +41,11 @@ public class Book {
     @Column(name = "phone")
     private String phone;
 
-    public String getIdentifier() {
+    public int getIdentifier() {
         return identifier;
     }
 
-    public void setIdentifier(String identifier) {
+    public void setIdentifier(int identifier) {
         this.identifier = identifier;
     }
 
