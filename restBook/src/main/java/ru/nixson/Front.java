@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/usr", produces = "application/json")
+@RequestMapping(value = "/usr")
 public class Front {
 
     private boolean checkToken(String authorization){

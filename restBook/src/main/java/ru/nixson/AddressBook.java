@@ -51,18 +51,20 @@ public class AddressBook {
     }
     public static Book auth(String login, String pass) throws NoSuchAlgorithmException {
         try {
-            Session sess = SF.getInstance().openSession();
-            Query q = sess.createQuery("FROM book where login = :login and password = :password");
-            q.setParameter("login",login);
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(pass.getBytes());
             byte[] digest = md.digest();
             String myHash = DatatypeConverter
                     .printHexBinary(digest).toUpperCase();
-            q.setParameter("password",myHash);
-            int cnt = q.getFetchSize();
+            System.out.println("Hash: "+myHash);
+            Session sess = SF.getInstance().openSession();
+            List q = sess.createQuery("FROM Book where login = :login and password = :password").
+                    setParameter("login",login).
+                    setParameter("password",myHash).list();
+            int cnt = q.size();
+            System.out.println("cnt: "+cnt);
             if(cnt > 0){
-                return (Book)q.getSingleResult();
+                return (Book)q.get(0);
             }
             return null;
         } catch (ExceptionInInitializerError err){
@@ -72,7 +74,7 @@ public class AddressBook {
     public static List<Book> find(String attr){
         try {
             Session sess = SF.getInstance().openSession();
-            Query query = sess.createQuery("from book where surname like '%:attr%' or" +
+            Query query = sess.createQuery("from Book where surname like '%:attr%' or" +
                     " firstname like '%:attr%' or " +
                     " middlename like '%:attr%' or " +
                     " email like '%:attr%' or " +

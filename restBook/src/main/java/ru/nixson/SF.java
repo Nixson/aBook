@@ -12,7 +12,7 @@ public class SF {
     static {
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("org.postgresql.Driver");
         } catch (Exception x){
             System.err.println("No def mysql in classpath!");
         }
@@ -23,9 +23,10 @@ public class SF {
 
         ///.addAnnotatedClass...
 
-        cfg.setProperty("hibernate.connection.url", "jdbc:mysql://80.92.31.23:3306/phonebook");
-        cfg.setProperty("hibernate.connection.username", "phonebook");
-        cfg.setProperty("hibernate.connection.password", "fUXUyPPI1S8kXWIr");
+        cfg.setProperty("hibernate.connection.url", "jdbc:postgresql://localhost:5439/platform");
+        cfg.setProperty("hibernate.connection.username", "postgres");
+        cfg.setProperty("hibernate.connection.password", "123456");
+        cfg.setProperty("hibernate.hbm2ddl.auto","create");
 
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
         builder.applySettings(cfg.getProperties());
