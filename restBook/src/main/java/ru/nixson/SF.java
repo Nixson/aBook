@@ -1,6 +1,5 @@
 package ru.nixson;
 
-
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -17,16 +16,14 @@ public class SF {
             System.err.println("No def mysql in classpath!");
         }
 
-
         Configuration cfg = new Configuration()
-                .addAnnotatedClass(Book.class);
-
-        ///.addAnnotatedClass...
+                .addAnnotatedClass(Book.class)
+                .addAnnotatedClass(Token.class);
 
         cfg.setProperty("hibernate.connection.url", "jdbc:postgresql://localhost:5439/platform");
         cfg.setProperty("hibernate.connection.username", "postgres");
         cfg.setProperty("hibernate.connection.password", "123456");
-        cfg.setProperty("hibernate.hbm2ddl.auto","create");
+        cfg.setProperty("hibernate.hbm2ddl.auto","update");
 
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
         builder.applySettings(cfg.getProperties());

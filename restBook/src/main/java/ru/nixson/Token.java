@@ -4,18 +4,16 @@ package ru.nixson;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "token")
 public class Token {
 
-    @Generated(value = GenerationTime.INSERT)
     @Id
-    @Column(name = "id")
+    @Generated(value = GenerationTime.INSERT)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id",updatable = false, nullable = false)
     private int identifier;
 
     @Column(name = "bid")

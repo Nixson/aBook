@@ -3,10 +3,25 @@ package ru.nixson;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
 
 public class QueryBuilder {
+    public static <T>T parseToObj(String uri, Class<T> cl) throws Exception{
+        T myEl = cl.newInstance();
+        HashMap<String, String> hm = parse(uri);
+        Field[] fl = cl.getDeclaredFields();
+        for(Field f:fl){
+            f.getType();
+            if(f.getType() == Integer.class )
+                f.set(myEl,new Integer(hm.get(f.getName())));
+            else
+                f.set(myEl,hm.get(f.getName()));
+        }
+        return myEl;
+    }
+
     public static HashMap<String, String> parse(String uri){
         UriComponentsBuilder b = UriComponentsBuilder.newInstance();
         MultiValueMap<String, String> parameters = b.query(uri).build().getQueryParams();

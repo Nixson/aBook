@@ -3,12 +3,12 @@ package ru.nixson;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(value = "/usr")
 public class Front {
 
@@ -42,25 +42,26 @@ public class Front {
     @ResponseBody
     public ResponseEntity putBook(
             @RequestHeader("Authorization") String authorization,
-            @RequestBody Book md
-    ) {
+            @RequestBody String book
+    ) throws Exception {
         if(checkToken(authorization)){
             return authError();
         }
-        if(md.getIdentifier()==0){
-            AddressBook.create(md);
+        Book bk = QueryBuilder.parseToObj(book,Book.class);
+        if(bk.getIdentifier()==0){
+            AddressBook.create(bk);
         } else
-            AddressBook.update(md);
+            AddressBook.update(bk);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
-        return ResponseEntity.ok().headers(headers).body(md);
+        return ResponseEntity.ok().headers(headers).body(book);
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity postBook(
             @RequestHeader("Authorization") String authorization,
-            @RequestBody String find
+            @RequestParam String find
     ) {
         if(checkToken(authorization)){
             return authError();

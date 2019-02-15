@@ -133,7 +133,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn btn-primary action" data-action="login">Войти</button>
+                    <button type="button" class="btn btn-primary action" data-action="save">Сохранить</button>
                 </div>
             </form>
         </div>
@@ -151,21 +151,30 @@
     });
     var form = (function(){
         var self = this;
-        self.domain = document.location.href;
-        if(self.domain.substr(self.domain.length - 1)=='/')
-            self.domain = self.domain.substr(0,self.domain.length - 1);
+        self.domain = "http://localhost:8999/restBook";
         self.client;
         self.list = [];
-        self.tpl = '<tr><td>#Surname#</td>' +
-            '<td>#Firtsname#</td>' +
-            '<td>#Middlename#</td>' +
-            '<td>#Birthday#</td>' +
-            '<td>#Email#</td>' +
-            '<td>#Phone#</td>' +
+        self.tpl = '<tr><td>#surname#</td>' +
+            '<td>#firtsname#</td>' +
+            '<td>#middlename#</td>' +
+            '<td>#birthday#</td>' +
+            '<td>#email#</td>' +
+            '<td>#phone#</td>' +
             '<td><button class="btn btn-info action" data-action="edit" data-attr="#Id#">изменить</button></td>' +
             '<td><button class="btn btn-warning action" data-action="rm" data-attr="#Id#">удалить</button></td>' +
             '</tr>';
         self.init = function(){
+            var client = self.getCookie('client');
+            if(client != undefined) {
+                self.client = JSON.parse(client);
+                self.loadData();
+            }
+            else {
+                $('#bookList').addClass("hidden");
+                $('#auth').modal('show');
+                $('#auth-login').val('');
+                $('#auth-pass').val('');
+            }
             $('#auth').on('hidden.bs.modal', function (e) {
                 if(self.client == undefined || self.client == null){
                     setTimeout(function(){
@@ -173,10 +182,6 @@
                     },500);
                 }
             });
-            $('#bookList').hide();
-            $('#auth').modal('show');
-            $('#auth-login').val('');
-            $('#auth-pass').val('');
             $('.action').on('click',function(){
                 var el = $(this).data('action');
                 var attr = $(this).data('attr');
@@ -185,17 +190,40 @@
                 }
             });
         };
+        self.eClient = {};
+        self.save = function(){
+            for(var el in self.eClient){
+                if(el=="id") continue;
+                var _this = $('#'+el);
+                if(_this!=null && typeof _this.val == 'function'){
+                    self.eClient[el] = _this.val();
+                }
+            }
+            self.ajax(self.domain+'/usr','PUT',JSON.stringify(self.eClient),function(){
+                self.loadData();
+            });
+        };
         self.add = function(){
-            self.id = null;
-            $('#edit form').clear();
-            $('#edit h4').text('Новая запись');
-            $('#login').enable();
-            $('#show-password').show();
             $('#edit').modal('show');
+            self.eClient = {
+                id: 0,
+                surname: null,
+                firstname: null,
+                middlename: null,
+                login: null,
+                password: null,
+                birthday: null,
+                email: null,
+                phone: null
+            };
+            $('#edit form')[0].reset();
+            $('#edit h4').text('Новая запись');
+            $('#login').attr('disabled',false);
+            $('#show-password').removeClass("hidden");
         };
         self.edit = function(id){
-            self.id = null;
-            $('#edit form').clear();
+            $('#edit').modal('show');
+            $('#edit form')[0].reset();
             var map = null;
             for(var el in self.list){
                 if(self.list[el].id==id){
@@ -204,8 +232,9 @@
                 }
             }
             if(map!=null){
-                $('#login').disable();
-                $('#show-password').hide();
+                self.eClient = map;
+                $('#login').attr('disabled',true);
+                $('#show-password').addClass("hidden");
                 var name = map.surname+" "+map.firstname+" "+map.middlename;
                 $('#edit h4').text(name);
                 for(var el in map){
@@ -214,8 +243,6 @@
                         _this.val(map[el]);
                     }
                 }
-                self.id = id;
-                $('#edit').modal('show');
             }
         };
         self.rm = function(){
@@ -232,13 +259,15 @@
             }
             self.post(self.domain+'/auth',auth,function(resp){
                 if(resp.error != undefined) {
-                    $('#auth-error').show().text(resp.data);
+                    $('#auth-error').removeClass("hidden").text(resp.data);
                     return;
                 }
                 self.client = resp.data;
-                $('#authInfo h4').html(self.client.Surname+" "+self.client.Firtsname+" "+self.client.Middlename+" <strong class='action' data-action='exit'>Выход</strong>")
+                self.client.token = resp.request.getResponseHeader("Authorization");
+                self.setCookie("client",JSON.stringify(self.client),{expires:3600, path:"/"});
+                $('#authInfo h4').html(self.client.surname+" "+self.client.firtsname+" "+self.client.middlename+" <strong class='action' data-action='exit'>Выход</strong>")
                 $('#auth').modal('hide');
-                $('#bookList').show();
+                $('#bookList').removeClass("hidden");
                 self.loadData();
             });
         };
@@ -247,13 +276,14 @@
             self.loadData();
         };
         self.loadData = function(){
-            self.get(self.domain+'/book',{find: $('#find').val()},function(resp){
+            self.post(self.domain+'/usr',{find: $('#find').val()},function(resp){
+                console.log(resp);
                 $('#bookListTable').text('');
                 if(resp.error != undefined){
-                    if(resp.data = "auth"){
+                    if(resp.data == "Ошибка авторизации"){
                         self.exit();
                     } else {
-                        $('#load-error').show().text(resp.data);
+                        $('#load-error').removeClass("hidden").text(resp.data);
                     }
                     return;
                 }
@@ -279,11 +309,16 @@
                 url: url,
                 type: type,
                 data: data,
-                success: function (result) {
-                    callback({success: true, data: result});
+                success: function (result,textStatus,resp) {
+                    console.log("success",textStatus,result,resp);
+                    callback({success: true, data: result, request: resp});
                 },
-                error: function (result) {
-                    callback({error: true, data: result});
+                error: function (result,textStatus) {
+                    console.log("error",textStatus,result);
+                    callback({error: true, data: result.responseText, request: result});
+                },
+                complete: function(xhr,status){
+                    console.log("complete",status,xhr);
                 }
             });
         }
@@ -295,10 +330,44 @@
         };
         self.exit = function(){
             self.client = null;
-            $('#bookList').hide();
+            $('#bookList').addClass("hidden");
             $('#auth').modal('show');
             $('#auth-login').val('');
             $('#auth-pass').val('');
+        };
+        self.getCookie = function(name) {
+            var matches = document.cookie.match(new RegExp(
+                "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+            ));
+            return matches ? decodeURIComponent(matches[1]) : undefined;
+        };
+        self.setCookie = function(name, value, options) {
+            options = options || {};
+
+            var expires = options.expires;
+
+            if (typeof expires == "number" && expires) {
+                var d = new Date();
+                d.setTime(d.getTime() + expires * 1000);
+                expires = options.expires = d;
+            }
+            if (expires && expires.toUTCString) {
+                options.expires = expires.toUTCString();
+            }
+
+            value = encodeURIComponent(value);
+
+            var updatedCookie = name + "=" + value;
+
+            for (var propName in options) {
+                updatedCookie += "; " + propName;
+                var propValue = options[propName];
+                if (propValue !== true) {
+                    updatedCookie += "=" + propValue;
+                }
+            }
+
+            document.cookie = updatedCookie;
         };
         return self;
     })();

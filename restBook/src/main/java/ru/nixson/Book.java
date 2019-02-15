@@ -4,6 +4,8 @@ import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Iterator;
 
 @Entity
 @Table(name = "book")

@@ -1,6 +1,7 @@
 package ru.nixson;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import javax.xml.bind.DatatypeConverter;
@@ -12,30 +13,37 @@ import java.util.List;
 import java.util.UUID;
 
 public class AddressBook {
-    public static void create(Book book){
+    private static void txCommit(Object el, String action){
         try {
             Session sess = SF.getInstance().openSession();
-            sess.save(book);
+            Transaction tx = sess.beginTransaction();
+            if(action.equals("save"))
+                sess.save(el);
+            else if(action.equals("update"))
+                sess.saveOrUpdate(el);
+            else if(action.equals("delete"))
+                sess.delete(el);
+            sess.flush();
+            tx.commit();
             sess.close();
         } catch (ExceptionInInitializerError err){
         }
     }
+    public static void create(Book book){
+        txCommit(book,"save");
+    }
 
     public static void update(Book book) {
-        try {
-        Session sess = SF.getInstance().openSession();
-        sess.update(book);
-        sess.close();
-        } catch (ExceptionInInitializerError err){
-        }
+        txCommit(book,"update");
     }
 
     public static void delete(int id){
         try {
-        Session sess = SF.getInstance().openSession();
-        Book book  = sess.byId(Book.class).load(id);
-        sess.delete(book);
-        sess.close();
+            Session sess = SF.getInstance().openSession();
+            Book book  = sess.byId(Book.class).load(id);
+            sess.delete(book);
+            sess.flush();
+            sess.close();
         } catch (ExceptionInInitializerError err){
         }
     }
@@ -74,13 +82,18 @@ public class AddressBook {
     public static List<Book> find(String attr){
         try {
             Session sess = SF.getInstance().openSession();
-            Query query = sess.createQuery("from Book where surname like '%:attr%' or" +
-                    " firstname like '%:attr%' or " +
-                    " middlename like '%:attr%' or " +
-                    " email like '%:attr%' or " +
-                    " phone like '%:attr%'");
-            query.setParameter("attr",attr);
-            List<Book> bl = query.getResultList();
+            attr = "%"+attr+"%";
+            List bl = sess.createQuery("from Book where surname like :attr1 or" +
+                    " firstname like :attr2 or " +
+                    " middlename like :attr3 or " +
+                    " email like :attr4 or " +
+                    " phone like :attr5")
+                    .setParameter("attr1",attr)
+                    .setParameter("attr2",attr)
+                    .setParameter("attr3",attr)
+                    .setParameter("attr4",attr)
+                    .setParameter("attr5",attr)
+                    .list();
             sess.close();
             return bl;
         } catch (ExceptionInInitializerError err){
@@ -95,10 +108,10 @@ public class AddressBook {
             Date now = new Date();
             Long longTime = new Long(now.getTime()/1000);
             Session sess = SF.getInstance().openSession();
-            Query query = sess.createQuery("from token where token = :token and dtime >= :dtime");
-            query.setParameter("token",token);
-            query.setParameter("dtime",longTime.intValue());
-            return query.getFetchSize() > 0;
+            List query = sess.createQuery("from Token where token = :token and dtime >= :dtime").
+                    setParameter("token",token).
+                    setParameter("dtime",longTime.intValue()).list();
+            return query.size() > 0;
         } catch (ExceptionInInitializerError err){
             return false;
         }
@@ -112,7 +125,10 @@ public class AddressBook {
         nt.setToken(UUID.randomUUID().toString());
         try {
             Session sess = SF.getInstance().openSession();
+            Transaction tx = sess.beginTransaction();
             sess.save(nt);
+            sess.flush();
+            tx.commit();
             sess.close();
             return nt.getToken();
         } catch (ExceptionInInitializerError err){
