@@ -2,6 +2,7 @@ package ru.nixson;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,16 +39,17 @@ public class Front {
         return ResponseEntity.ok().headers(headers).body(ab);
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
+    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity putBook(
             @RequestHeader("Authorization") String authorization,
-            @RequestBody String book
+            @RequestParam Book book
     ) throws Exception {
+        Book bk = book;
         if(checkToken(authorization)){
             return authError();
         }
-        Book bk = QueryBuilder.parseToObj(book,Book.class);
+        //Book bk = QueryBuilder.parseToObj(book,Book.class);
         if(bk.getIdentifier()==0){
             AddressBook.create(bk);
         } else

@@ -9,20 +9,22 @@ public class SF {
     private static SessionFactory sf;
 
     static {
+        Config conf = Config.getConfig("connection-config");
+
 
         try {
-            Class.forName("org.postgresql.Driver");
+            Class.forName(conf.getParam(Config.AK_DB_FORNAME));
         } catch (Exception x){
-            System.err.println("No def mysql in classpath!");
+            System.err.println("No def "+conf.getParam(Config.AK_DB_FORNAME)+" in classpath!");
         }
 
         Configuration cfg = new Configuration()
                 .addAnnotatedClass(Book.class)
                 .addAnnotatedClass(Token.class);
 
-        cfg.setProperty("hibernate.connection.url", "jdbc:postgresql://localhost:5439/platform");
-        cfg.setProperty("hibernate.connection.username", "postgres");
-        cfg.setProperty("hibernate.connection.password", "123456");
+        cfg.setProperty("hibernate.connection.url", conf.getParam(Config.AK_DB_URL));
+        cfg.setProperty("hibernate.connection.username", conf.getParam(Config.AK_DB_USER));
+        cfg.setProperty("hibernate.connection.password", conf.getParam(Config.AK_DB_PASSWORD));
         cfg.setProperty("hibernate.hbm2ddl.auto","update");
 
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();

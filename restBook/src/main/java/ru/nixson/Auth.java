@@ -18,9 +18,6 @@ public class Auth {
             @RequestParam(required = true) String login,
             @RequestParam(required = true) String password
     ) throws NoSuchAlgorithmException {
-/*        HashMap<String, String> map = QueryBuilder.parse(uri);
-        String login = map.get("login");
-        String password = map.get("password");*/
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
         Book resp;
