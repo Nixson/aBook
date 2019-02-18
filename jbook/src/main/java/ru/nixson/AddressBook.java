@@ -82,18 +82,23 @@ public class AddressBook {
     public static List<Book> find(String attr){
         try {
             Session sess = SF.getInstance().openSession();
-            attr = "%"+attr+"%";
-            List bl = sess.createQuery("from Book where surname like :attr1 or" +
-                    " firstname like :attr2 or " +
-                    " middlename like :attr3 or " +
-                    " email like :attr4 or " +
-                    " phone like :attr5")
-                    .setParameter("attr1",attr)
-                    .setParameter("attr2",attr)
-                    .setParameter("attr3",attr)
-                    .setParameter("attr4",attr)
-                    .setParameter("attr5",attr)
-                    .list();
+            List bl;
+            if(attr==null) {
+                bl = sess.createQuery("form Book").list();
+            } else {
+                attr = "%"+attr+"%";
+                bl = sess.createQuery("from Book where surname like :attr1 or" +
+                        " firstname like :attr2 or " +
+                        " middlename like :attr3 or " +
+                        " email like :attr4 or " +
+                        " phone like :attr5")
+                        .setParameter("attr1",attr)
+                        .setParameter("attr2",attr)
+                        .setParameter("attr3",attr)
+                        .setParameter("attr4",attr)
+                        .setParameter("attr5",attr)
+                        .list();
+            }
             sess.close();
             return bl;
         } catch (ExceptionInInitializerError err){

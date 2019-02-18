@@ -12,6 +12,7 @@
     <modules>
         <module>webws</module>
         <module>restBook</module>
+        <module>jbook</module>
     </modules>
 
     <dependencies>

@@ -1,19 +1,30 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="restBook:war exploded">
-    <output-path>$PROJECT_DIR$/restBook/target/restBook</output-path>
+  <artifact type="exploded-war" name="jbook:war exploded">
+    <output-path>$PROJECT_DIR$/jbook/target/jbook</output-path>
     <properties id="maven-jee-properties">
       <options>
         <exploded>true</exploded>
-        <module>restBook</module>
+        <module>jbook</module>
         <packaging>war</packaging>
       </options>
     </properties>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="restBook" />
+          <element id="module-output" name="jbook" />
         </element>
         <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.sun.jersey:jersey-server:1.8" />
+          <element id="library" level="project" name="Maven: asm:asm:3.1" />
+          <element id="library" level="project" name="Maven: com.sun.jersey:jersey-core:1.8" />
+          <element id="library" level="project" name="Maven: com.sun.jersey:jersey-json:1.8" />
+          <element id="library" level="project" name="Maven: org.codehaus.jettison:jettison:1.1" />
+          <element id="library" level="project" name="Maven: stax:stax-api:1.0.1" />
+          <element id="library" level="project" name="Maven: com.sun.xml.bind:jaxb-impl:2.2.3-1" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.7.1" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.7.1" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-jaxrs:1.7.1" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-xc:1.7.1" />
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:5.4.1.Final" />
           <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.3.2.Final" />
           <element id="library" level="project" name="Maven: javax.persistence:javax.persistence-api:2.2" />
@@ -36,20 +47,12 @@
           <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.6.1" />
           <element id="library" level="project" name="Maven: com.h2database:h2:1.4.197" />
           <element id="library" level="project" name="Maven: postgresql:postgresql:9.1-901.jdbc4" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.1.4.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.1.4.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.1.4.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.1.4.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-core:5.1.4.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.1.4.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.1.4.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-web:5.1.4.RELEASE" />
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/restBook/target/restBook/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/jbook/target/jbook/META-INF/MANIFEST.MF" />
       </element>
-      <element id="javaee-facet-resources" facet="restBook/web/Web" />
+      <element id="javaee-facet-resources" facet="jbook/web/Web" />
     </root>
   </artifact>
 </component>

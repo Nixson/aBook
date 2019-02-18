@@ -7,13 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="addressBook" />
-        <module name="restBook" />
+        <module name="jbook" />
         <module name="webws" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="aBook" target="1.5" />
       <module name="addressBook" target="1.5" />
+      <module name="jbook" target="1.5" />
       <module name="restBook" target="1.5" />
       <module name="webws" target="1.5" />
     </bytecodeTargetLevel>

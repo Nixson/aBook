@@ -152,7 +152,7 @@
     var form = (function(){
         var self = this;
         self.domain = "http://localhost:8999/restBook";
-        self.domain = "http://localhost:8081/restBook";
+        self.domain = "http://localhost:8081/jbook";
         self.client;
         self.list = [];
         self.tpl = '<tr><td>#surname#</td>' +
@@ -200,14 +200,13 @@
                     self.eClient[el] = _this.val();
                 }
             }
-            self.ajax(self.domain+'/usr','PUT',JSON.stringify(self.eClient),function(){
+            self.post(self.domain+'/usr/add',JSON.stringify(self.eClient),function(){
                 self.loadData();
             });
         };
         self.add = function(){
             $('#edit').modal('show');
             self.eClient = {
-                id: 0,
                 surname: null,
                 firstname: null,
                 middlename: null,
@@ -256,9 +255,9 @@
         self.login = function(){
             var auth = {
                 login: $('#auth-login').val(),
-                password: $('#auth-pass').val()
+                pass: $('#auth-pass').val()
             }
-            self.post(self.domain+'/auth',auth,function(resp){
+            self.post(self.domain+'/auth/token',JSON.stringify(auth),function(resp){
                 if(resp.error != undefined) {
                     $('#auth-error').removeClass("hidden").text(resp.data);
                     return;
@@ -277,7 +276,7 @@
             self.loadData();
         };
         self.loadData = function(){
-            self.post(self.domain+'/usr',{find: $('#find').val()},function(resp){
+            self.post(self.domain+'/usr',JSON.stringify({find: $('#find').val()}),function(resp){
                 console.log(resp);
                 $('#bookListTable').text('');
                 if(resp.error != undefined){
@@ -302,7 +301,7 @@
             });
         };
         self.ajax = function(url,type,data,callback){
-            var headers = {};
+            var headers = {'Content-Type':'application/json; charset=UTF-8'};
             if(self.client != null && self.client.token!=undefined)
                 headers.Authorization = self.client.token;
             $.ajax({

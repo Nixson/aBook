@@ -1,23 +1,18 @@
 package ru.nixson;
 
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.Iterator;
 
 @Entity
 @Table(name = "book")
 public class Book {
 
     @Id
-    @Generated(value = GenerationTime.INSERT)
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id",updatable = false, nullable = false)
     private int identifier;
 
-    @Column(name = "login")
+    @Column(name = "login", unique = true)
     private String login;
 
     @Column(name = "password")

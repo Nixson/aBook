@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/aBook.iml" filepath="$PROJECT_DIR$/aBook.iml" />
       <module fileurl="file://$PROJECT_DIR$/addressBook/addressBook.iml" filepath="$PROJECT_DIR$/addressBook/addressBook.iml" />
-      <module fileurl="file://$PROJECT_DIR$/restBook/restBook.iml" filepath="$PROJECT_DIR$/restBook/restBook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jbook/jbook.iml" filepath="$PROJECT_DIR$/jbook/jbook.iml" />
       <module fileurl="file://$PROJECT_DIR$/webws/webws.iml" filepath="$PROJECT_DIR$/webws/webws.iml" />
     </modules>
   </component>
