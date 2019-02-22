@@ -156,13 +156,13 @@
         self.client;
         self.list = [];
         self.tpl = '<tr><td>#surname#</td>' +
-            '<td>#firtsname#</td>' +
+            '<td>#firstname#</td>' +
             '<td>#middlename#</td>' +
             '<td>#birthday#</td>' +
             '<td>#email#</td>' +
             '<td>#phone#</td>' +
-            '<td><button class="btn btn-info action" data-action="edit" data-attr="#Id#">изменить</button></td>' +
-            '<td><button class="btn btn-warning action" data-action="rm" data-attr="#Id#">удалить</button></td>' +
+            '<td><button class="btn btn-info action" data-action="edit" data-attr="#identifier#">изменить</button></td>' +
+            '<td><button class="btn btn-warning action" data-action="rm" data-attr="#identifier#">удалить</button></td>' +
             '</tr>';
         self.init = function(){
             var client = self.getCookie('client');
@@ -183,7 +183,7 @@
                     },500);
                 }
             });
-            $('.action').on('click',function(){
+            $(document).on('click','.action',function(){
                 var el = $(this).data('action');
                 var attr = $(this).data('attr');
                 if( typeof form[el]=='function'){
@@ -226,7 +226,7 @@
             $('#edit form')[0].reset();
             var map = null;
             for(var el in self.list){
-                if(self.list[el].id==id){
+                if(self.list[el].identifier==id){
                     map = self.list[el];
                     break;
                 }
@@ -245,7 +245,7 @@
                 }
             }
         };
-        self.rm = function(){
+        self.rm = function(id){
             if(confirm("Вы уверены?")){
                 self.get(self.domain+'/rm/'+id,'',function(){
                     self.loadData();

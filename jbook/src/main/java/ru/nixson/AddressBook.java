@@ -84,7 +84,7 @@ public class AddressBook {
             Session sess = SF.getInstance().openSession();
             List bl;
             if(attr==null) {
-                bl = sess.createQuery("form Book").list();
+                bl = sess.createQuery("from Book").list();
             } else {
                 attr = "%"+attr+"%";
                 bl = sess.createQuery("from Book where surname like :attr1 or" +
