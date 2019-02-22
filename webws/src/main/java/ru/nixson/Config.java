@@ -23,7 +23,6 @@ public class Config {
     }
 
 
-    //for tomcat config-file must be located @ /bin directory
     public static Config getConfig(String configName) {
         Config cfg = new Config();
         FileReader fr = null;

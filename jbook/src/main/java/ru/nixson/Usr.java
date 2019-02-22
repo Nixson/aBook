@@ -18,6 +18,14 @@ public class Usr {
             AddressBook.update(book);
     }
 
+    @GET
+    @Path("/rm/{id}")
+    public void rmBook(
+            @PathParam("id") int id
+    ){
+        AddressBook.delete(id);
+    }
+
     @POST
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
